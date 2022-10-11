@@ -11,18 +11,20 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <BorderPane id="board" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.calculator.MainController">
    <center>
       <TabPane id="tab-pane" fx:id="tab_pane" onMouseClicked="#tabCheck" prefHeight="441.0" prefWidth="638.0" styleClass="calc-tab-style" stylesheets="@application.css" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
         <tabs>
-          <Tab id="calc-tab" fx:id="calc_tab" styleClass="calc-tab-style" text="calculator">
+          <Tab id="calc-tab" fx:id="calc_tab" styleClass="calc-tab-style" text="standard">
                <content>
                   <BorderPane fx:id="cal_border" prefHeight="186.0" prefWidth="186.0">
                      <top>
-                        <TextField id="text-bar" fx:id="calc_text" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="58.0" prefWidth="226.0" promptText="enter in a calculation" stylesheets="@application.css" BorderPane.alignment="TOP_LEFT">
+                        <TextField id="text-bar" fx:id="calc_text" editable="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="219.0" promptText="enter in a calculation" stylesheets="@application.css" BorderPane.alignment="TOP_LEFT">
                            <BorderPane.margin>
                               <Insets />
                            </BorderPane.margin>
@@ -35,7 +37,7 @@
                         </TextField>
                      </top>
                      <left>
-                        <GridPane id="calc-grid" fx:id="calc_board" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="170.0" prefWidth="120.0" stylesheets="@application.css" BorderPane.alignment="CENTER">
+                        <GridPane id="calc-grid" fx:id="calc_board" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="194.0" prefWidth="125.0" stylesheets="@application.css" BorderPane.alignment="CENTER">
                           <columnConstraints>
                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -45,31 +47,34 @@
                           <rowConstraints>
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="4" GridPane.rowIndex="1" />
-                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="7" />
-                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="1" GridPane.rowIndex="2" />
-                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="8" GridPane.columnIndex="1" />
-                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="5" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="2" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="6" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="9" GridPane.columnIndex="2" />
-                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="3" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="0" GridPane.rowIndex="3" />
-                              <Button fx:id="plus" mnemonicParsing="false" onMouseClicked="#operationAction" text="+" GridPane.columnIndex="3" />
-                              <Button fx:id="minus" mnemonicParsing="false" onMouseClicked="#operationAction" text="-" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                              <Button fx:id="mult" mnemonicParsing="false" onMouseClicked="#operationAction" text="*" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-                              <Button fx:id="divide" mnemonicParsing="false" onMouseClicked="#operationAction" text="/" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                              <Button fx:id="equals" mnemonicParsing="false" onAction="#equalsAction" text="=" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                              <Button fx:id="clear" mnemonicParsing="false" onAction="#clearAction" prefHeight="26.0" prefWidth="52.0" text="CE" GridPane.rowIndex="4">
+                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="4" GridPane.rowIndex="2" />
+                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="7" GridPane.rowIndex="1" />
+                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="1" GridPane.rowIndex="3" />
+                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="8" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="5" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="2" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="6" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="9" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="3" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="0" GridPane.rowIndex="4" />
+                              <Button fx:id="plus" mnemonicParsing="false" onMouseClicked="#operationAction" text="+" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                              <Button fx:id="minus" mnemonicParsing="false" onMouseClicked="#operationAction" text="-" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                              <Button fx:id="mult" mnemonicParsing="false" onMouseClicked="#operationAction" text="*" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                              <Button fx:id="divide" mnemonicParsing="false" onMouseClicked="#operationAction" text="/" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                              <Button fx:id="equals" mnemonicParsing="false" onAction="#equalsAction" text="=" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                              <Button fx:id="clear" mnemonicParsing="false" onAction="#clearAction" prefHeight="26.0" prefWidth="26.0" text="CE" GridPane.columnIndex="2">
                                  <font>
-                                    <Font />
+                                    <Font size="10.0" />
                                  </font>
                               </Button>
+                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="2" GridPane.rowIndex="1" />
+                              <Button fx:id="del" mnemonicParsing="false" onAction="#deleteAction" text="&lt;" GridPane.columnIndex="3" />
                            </children>
                            <effect>
                               <ColorAdjust contrast="1.0" hue="0.7" />
@@ -80,11 +85,11 @@
                         <Insets left="50.0" right="20.0" top="20.0" />
                      </padding>
                      <center>
-                        <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="146.0" BorderPane.alignment="CENTER_LEFT">
+                        <ScrollPane fitToHeight="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="89.0" prefWidth="265.0" BorderPane.alignment="CENTER_LEFT">
                           <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="66.0" prefWidth="171.0">
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="66.0" prefWidth="370.0">
                                  <children>
-                                    <TextField fx:id="resultText" editable="false" prefHeight="72.0" prefWidth="479.0" promptText="Result">
+                                    <TextField fx:id="resultText" editable="false" prefHeight="72.0" prefWidth="374.0" promptText="Result">
                                        <font>
                                           <Font size="33.0" />
                                        </font>
@@ -112,4 +117,21 @@
    <padding>
       <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
    </padding>
+   <top>
+      <HBox alignment="TOP_CENTER" prefHeight="19.0" prefWidth="540.0" spacing="86.0" BorderPane.alignment="CENTER">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Calculator Pro">
+               <font>
+                  <Font name="Times New Roman Italic" size="29.0" />
+               </font>
+               <HBox.margin>
+                  <Insets />
+               </HBox.margin>
+            </Text>
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </HBox>
+   </top>
 </BorderPane>
