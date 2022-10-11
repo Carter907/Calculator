@@ -73,7 +73,6 @@
                                     <Font size="10.0" />
                                  </font>
                               </Button>
-                              <Button mnemonicParsing="false" onMouseClicked="#operationAction" text="2" GridPane.rowIndex="1" />
                               <Button fx:id="del" mnemonicParsing="false" onAction="#deleteAction" text="&lt;" GridPane.columnIndex="3" />
                            </children>
                            <effect>
