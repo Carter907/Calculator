@@ -1,17 +1,20 @@
-
 package com.example.calculator;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Polyline;
 import javafx.stage.Stage;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
+import java.util.*;
 import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -42,7 +45,8 @@ public class MainController {
     private TextField resultText;
     @FXML
     private Tab graph_tab;
-
+    @FXML
+    private Polyline graph;
     @FXML
     private Button minus;
 
@@ -75,18 +79,63 @@ public class MainController {
         resultText.setText("");
         calc_text.setText("");
     }
+
     @FXML
     void deleteAction(ActionEvent event) {
         if (!calc_text.getText().equals(""))
-        calc_text.setText(calc_text.getText().substring(0,calc_text.getText().length()-1));
+            calc_text.setText(calc_text.getText().substring(0, calc_text.getText().length() - 1));
     }
 
     @FXML
     void equalsAction(ActionEvent event) {
         System.out.println("equalsAction");
-        BigDecimal result = handleOperations(calc_text.getText());
-        resultText.setText("" + result);
+        if (calc_text.getText().matches(".*[xy].*")) {
 
+            System.out.println("contains x or y");
+            setGraph(calc_text.getText());
+
+        }
+        else {
+            BigDecimal result = handleOperations(calc_text.getText());
+            resultText.setText("" + result);
+        }
+    }
+
+    private void setGraph(String input) {
+        System.out.println(input);
+        ObservableList<Double> points = graph.getPoints();
+        points.clear();
+
+        String pluggedExpression = "";
+        for (int i = -100; i < +300; i++) {
+
+            pluggedExpression = input.replace("x", String.valueOf(i));
+            points.add((double)i);
+            points.add(handleOperations(pluggedExpression).doubleValue());
+
+        }
+    }
+
+    private LinkedList<String> getExpression(String input) {
+
+        if (input.equals("")) {
+
+            return null;
+        }
+        Pattern terms = Pattern.compile("\\d+");
+        Matcher termMat = terms.matcher(input);
+        Pattern operations = Pattern.compile("[*/+-]");
+        Matcher operMat = operations.matcher(input);
+
+
+        LinkedList<String> expr = new LinkedList<>();
+        while (termMat.find()) {
+            expr.add(termMat.group());
+            if (termMat.end() > input.length() - 1) break;
+            operMat.find();
+            expr.add(operMat.group());
+        }
+        return expr;
     }
 
     private BigDecimal handleOperations(String input) {
@@ -104,8 +153,7 @@ public class MainController {
         LinkedList<String> expr = new LinkedList<>();
         while (termMat.find()) {
             expr.add(termMat.group());
-            if (termMat.end() > input.length() - 1)
-                break;
+            if (termMat.end() > input.length() - 1) break;
             operMat.find();
             expr.add(operMat.group());
         }
@@ -122,10 +170,9 @@ public class MainController {
             symb = symbols[i];
             while (expr.contains(symb)) {
                 for (int j = 0; j < expr.size(); j++) {
-                    if (expr.contains(symb))
-                    switch (symb) {
+                    if (expr.contains(symb)) switch (symb) {
                         case "*" -> {
-                            pointer = expr.indexOf("*")-1;
+                            pointer = expr.indexOf("*") - 1;
                             term1 = term1.valueOf(Double.parseDouble(expr.remove(expr.indexOf("*") - 1)));
                             term2 = term2.valueOf(Double.parseDouble(expr.remove(expr.indexOf("*") + 1)));
 
@@ -133,7 +180,7 @@ public class MainController {
                             expr.set(pointer, String.valueOf(result));
                         }
                         case "/" -> {
-                            pointer = expr.indexOf("/")-1;
+                            pointer = expr.indexOf("/") - 1;
                             term1 = term1.valueOf(Double.parseDouble(expr.remove(expr.indexOf("/") - 1)));
                             term2 = term2.valueOf(Double.parseDouble(expr.remove(expr.indexOf("/") + 1)));
 
@@ -141,16 +188,76 @@ public class MainController {
                             expr.set(pointer, String.valueOf(result));
                         }
                         case "+" -> {
-                            pointer = expr.indexOf("+")-1;
+                            pointer = expr.indexOf("+") - 1;
                             term1 = term1.valueOf(Double.parseDouble(expr.remove(expr.indexOf("+") - 1)));
                             term2 = term2.valueOf(Double.parseDouble(expr.remove(expr.indexOf("+") + 1)));
 
 
-                            result = term1.add(term2,MathContext.DECIMAL128);
+                            result = term1.add(term2, MathContext.DECIMAL128);
                             expr.set(pointer, String.valueOf(result));
                         }
                         case "-" -> {
-                            pointer = expr.indexOf("-")-1;
+                            pointer = expr.indexOf("-") - 1;
+                            term1 = term1.valueOf(Double.parseDouble(expr.remove(expr.indexOf("-") - 1)));
+                            term2 = term2.valueOf(Double.parseDouble(expr.remove(expr.indexOf("-") + 1)));
+
+                            result = term1.subtract(term2, MathContext.DECIMAL128);
+                            expr.set(pointer, String.valueOf(result));
+                        }
+
+                    }
+
+                    System.out.println(expr);
+                }
+            }
+        }
+        System.out.println(expr);
+
+
+        return result;
+    }
+
+    private BigDecimal handleOperations(LinkedList<String> expr) {
+
+        BigDecimal result = new BigDecimal(0d);
+        BigDecimal term1 = new BigDecimal(0d);
+        BigDecimal term2 = new BigDecimal(0d);
+        String symb = "*";
+        int pointer = 0;
+        String[] symbols = {"*", "/", "+", "-"};
+        System.out.println(expr);
+        for (int i = 0; i < symbols.length; i++) {
+            symb = symbols[i];
+            while (expr.contains(symb)) {
+                for (int j = 0; j < expr.size(); j++) {
+                    if (expr.contains(symb)) switch (symb) {
+                        case "*" -> {
+                            pointer = expr.indexOf("*") - 1;
+                            term1 = term1.valueOf(Double.parseDouble(expr.remove(expr.indexOf("*") - 1)));
+                            term2 = term2.valueOf(Double.parseDouble(expr.remove(expr.indexOf("*") + 1)));
+
+                            result = term1.multiply(term2, MathContext.DECIMAL128);
+                            expr.set(pointer, String.valueOf(result));
+                        }
+                        case "/" -> {
+                            pointer = expr.indexOf("/") - 1;
+                            term1 = term1.valueOf(Double.parseDouble(expr.remove(expr.indexOf("/") - 1)));
+                            term2 = term2.valueOf(Double.parseDouble(expr.remove(expr.indexOf("/") + 1)));
+
+                            result = term1.divide(term2, 10, RoundingMode.HALF_UP);
+                            expr.set(pointer, String.valueOf(result));
+                        }
+                        case "+" -> {
+                            pointer = expr.indexOf("+") - 1;
+                            term1 = term1.valueOf(Double.parseDouble(expr.remove(expr.indexOf("+") - 1)));
+                            term2 = term2.valueOf(Double.parseDouble(expr.remove(expr.indexOf("+") + 1)));
+
+
+                            result = term1.add(term2, MathContext.DECIMAL128);
+                            expr.set(pointer, String.valueOf(result));
+                        }
+                        case "-" -> {
+                            pointer = expr.indexOf("-") - 1;
                             term1 = term1.valueOf(Double.parseDouble(expr.remove(expr.indexOf("-") - 1)));
                             term2 = term2.valueOf(Double.parseDouble(expr.remove(expr.indexOf("-") + 1)));
 

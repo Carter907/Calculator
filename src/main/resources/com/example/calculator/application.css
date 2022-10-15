@@ -1,9 +1,15 @@
 .root {
 }
-
+#calc-grid {
+    -fx-background-color: gray;
+}
 .calc-tab-style {
-    -fx-background-color: #c3d7de;
+    -fx-background-color: gray;
 }
 .graphing-style {
-    -fx-background-color: #dec3c3;
+    -fx-background-color: gray;
+}
+.graphingGraph {
+    -fx-background-color: white;
+    -fx-border-color: gray;
 }
